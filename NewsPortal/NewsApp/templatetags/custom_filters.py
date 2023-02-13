@@ -9,7 +9,7 @@ register = template.Library()
 
 @register.filter()
 def censor(value):
-    banned_words = ['никогда', 'сериале', 'Зельвенский']
+    banned_words = ['преступлениях', 'России', 'стратегии']
 
     if not isinstance (value, str):
         raise TypeError(f"Недопустимое значение '{type(value)}' Нужно ввести строковое значение")
