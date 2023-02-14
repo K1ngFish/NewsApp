@@ -22,7 +22,9 @@ Posts
    <!-- Если в переменной open_vacancies будет None,
    то выведется указанный в фильтре текст -->
    <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4>
+    {% if perms.NewsApp.add_post %}
     <a href="{% url 'post_create' %}">Написать пост</a>
+    {% endif %}
    <hr>
    {% if posts %}
        <table>
@@ -32,7 +34,9 @@ Posts
                <td><b>Автор поста</b></td>
                <td><b>Текст поста</b></td>
                <td><b>Рейтинг поста</b></td>
+               {% if perms.NewsApp.change_post %}
                <td><b>Действия</b></td>
+               {% endif %}
            </tr>
            {% for post in posts %}
            <tr>
@@ -42,8 +46,13 @@ Posts
                <td> {{ post.text|truncatewords:20|censor }} </td>
                <td> {{ post.rating }} </td>
                <td>
+                   {% if perms.NewsApp.change_post %}
                    <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
+                   {% endif %}
+                   {% if perms.NewsApp.delete_post %}
                    <a href="{% url 'post_delete' post.id %}">Удалить</a>
+                   {% endif %}
+
                </td>
            </tr>
            {% endfor %}
