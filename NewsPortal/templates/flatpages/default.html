@@ -31,10 +31,13 @@
                             <div class = 'dropdown'>
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Аккаунт</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="http://127.0.0.1:8000/accounts/login">Войти</a></li>
-                                <li><a class="dropdown-item" href="http://127.0.0.1:8000/accounts/signup">Зарегистрироваться</a></li>
-                                <li><hr class="dropdown-divider" /></li>
+                                {% if request.user.is_authenticated %}
                                 <li><a class="dropdown-item" href="http://127.0.0.1:8000/accounts/logout">Выйти из аккаунта</a></li>
+
+                                {% else %}
+                                <!--<li><hr class="dropdown-divider" /></li>-->
+                                <li><a class="dropdown-item" href="http://127.0.0.1:8000/accounts/login">Войти</a></li>
+                                <li><a class="dropdown-item" href="http://127.0.0.1:8000/accounts/signup">Зарегистрироваться</a></li>                                {% endif %}
                             </ul>
                         </div>
 

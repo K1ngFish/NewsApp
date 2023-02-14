@@ -36,6 +36,10 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -55,6 +59,10 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.title.title()}: {self.text[:100]}'
+
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
 
     def like(self):
         self.rating += 1
