@@ -22,7 +22,7 @@ Posts
    <!-- Если в переменной open_vacancies будет None,
    то выведется указанный в фильтре текст -->
    <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4>
-
+    <a href="{% url 'post_create' %}">Написать пост</a>
    <hr>
    {% if posts %}
        <table>
@@ -32,6 +32,7 @@ Posts
                <td><b>Автор поста</b></td>
                <td><b>Текст поста</b></td>
                <td><b>Рейтинг поста</b></td>
+               <td><b>Действия</b></td>
            </tr>
            {% for post in posts %}
            <tr>
@@ -40,6 +41,10 @@ Posts
                <td> {{ post.author }} </td>
                <td> {{ post.text|truncatewords:20|censor }} </td>
                <td> {{ post.rating }} </td>
+               <td>
+                   <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
+                   <a href="{% url 'post_delete' post.id %}">Удалить</a>
+               </td>
            </tr>
            {% endfor %}
        </table>
