@@ -7,23 +7,16 @@ Posts
 {% endblock title %}
 
 {% block content %}
-   <h3>Новости и статьи</h3>
-   <h3>{{ time_now|date:'M d Y' }}</h3>
-   <h5>Всего постов: {{ posts|length }}</h5>
 
-<!-- {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+<h3> Поиск по сайту</h3>
     <form action="" method="get">
-       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
        {{ filterset.form.as_p }}
-       {# Добавим кнопку отправки данных формы #}
        <input type="submit" value="Найти" />
-   </form> -->
+   </form>
 
-   <!-- Если в переменной open_vacancies будет None,
-   то выведется указанный в фильтре текст -->
    <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4>
    <hr>
-   {% if posts %}
+   {% if search_list %}
        <table>
            <tr>
                <td><b>Заголовок</b></td>
@@ -35,7 +28,7 @@ Posts
                <td><b>Действия</b></td>
                {% endif %}
            </tr>
-           {% for post in posts %}
+           {% for post in search_list %}
            <tr>
                <td> <a href="{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a></td>
                <td> {{ post.dateCreation|date:'d.M.Y' }} </td>
@@ -58,8 +51,6 @@ Posts
        <h2>Будьте первым, кто опубликует пост :)</h2>
    {% endif %}
 
-    {# Добавляем пагинацию на страницу #}
-   {# Информация о предыдущих страницах #}
    {% if page_obj.has_previous %}
        <a href="?page=1">1</a>
        {% if page_obj.previous_page_number != 1 %}
@@ -67,11 +58,7 @@ Posts
            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
        {% endif %}
    {% endif %}
-
-   {# Информация о текущей странице #}
    {{ page_obj.number }}
-
-   {# Информация о следующих страницах #}
    {% if page_obj.has_next %}
        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
@@ -79,5 +66,6 @@ Posts
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
+
 
 {% endblock content %}

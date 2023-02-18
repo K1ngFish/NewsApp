@@ -42,7 +42,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
 
     NEWS = 'NW'
     ARTICLE = 'AR'
@@ -50,11 +50,12 @@ class Post(models.Model):
         (NEWS, 'Новость'),
         (ARTICLE, 'Статья')
     )
-    category_type = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
-    dateCreation = models.DateTimeField(auto_now_add=True)
-    postCategory = models.ManyToManyField(Category, through='PostCategory')
-    title = models.CharField(max_length=128)
-    text = models.TextField()
+    category_type = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE,
+                                     verbose_name='Тип поста')
+    dateCreation = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания поста')
+    postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name='Рубрика поста')
+    title = models.CharField(max_length=128, verbose_name='Заголовок поста')
+    text = models.TextField(verbose_name='Текст')
     rating = models.SmallIntegerField(default=0)
 
     def __str__(self):

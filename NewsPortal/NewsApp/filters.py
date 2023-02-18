@@ -17,5 +17,5 @@ class PostFilter(FilterSet):
         model = Post
         fields = {
             'title',
-            'category_type'
+            'category_type',
             }

@@ -20,36 +20,36 @@ class PostsList(ListView):
     context_object_name = 'posts'
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
+#    def get_context_data(self, **kwargs):
         # С помощью super() мы обращаемся к родительским классам
         # и вызываем у них метод get_context_data с теми же аргументами,
         # что и были переданы нам.
         # В ответе мы должны получить словарь.
-        context = super().get_context_data(**kwargs)
+#        context = super().get_context_data(**kwargs)
         # К словарю добавим текущую дату в ключ 'time_now'.
-        context['time_now'] = datetime.utcnow()
+ #       context['time_now'] = datetime.utcnow()
         # Добавим ещё одну пустую переменную,
         # чтобы на её примере рассмотреть работу ещё одного фильтра.
-        context['open_vacancies'] = None
-        return context
+#        context['open_vacancies'] = None
+#        return context
 
-    def get_queryset(self):
+#    def get_queryset(self):
         # Получаем обычный запрос
-        queryset = super().get_queryset()
+#        queryset = super().get_queryset()
         # Используем наш класс фильтрации.
         # self.request.GET содержит объект QueryDict, который мы рассматривали
         # в этом юните ранее.
         # Сохраняем нашу фильтрацию в объекте класса,
         # чтобы потом добавить в контекст и использовать в шаблоне.
-        self.filterset = PostFilter(self.request.GET, queryset)
+#        self.filterset = PostFilter(self.request.GET, queryset)
         # Возвращаем из функции отфильтрованный список товаров
-        return self.filterset.qs
+#        return self.filterset.qs
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+#    def get_context_data(self, **kwargs):
+#        context = super().get_context_data(**kwargs)
         # Добавляем в контекст объект фильтрации.
-        context['filterset'] = self.filterset
-        return context
+#        context['filterset'] = self.filterset
+#        return context
 
 
 class PostDetail(DetailView):
@@ -80,5 +80,30 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
+
+
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'search.html'
+    context_object_name = 'search_list'
+    paginate_by = 4
+
+    def get_queryset(self):
+        # Получаем обычный запрос
+        queryset = super().get_queryset()
+        # Используем наш класс фильтрации.
+        # self.request.GET содержит объект QueryDict, который мы рассматривали
+        # в этом юните ранее.
+        # Сохраняем нашу фильтрацию в объекте класса,
+        # чтобы потом добавить в контекст и использовать в шаблоне.
+        self.filterset = PostFilter(self.request.GET, queryset)
+        # Возвращаем из функции отфильтрованный список товаров
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавляем в контекст объект фильтрации.
+        context['filterset'] = self.filterset
+        return context
 
 
