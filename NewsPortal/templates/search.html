@@ -16,35 +16,22 @@ Posts
 
    <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4>
    <hr>
-   {% if search_list %}
-       <table>
-           <tr>
-               <td><b>Заголовок</b></td>
-               <td><b>Дата публикации</b></td>
-               <td><b>Автор поста</b></td>
-               <td><b>Текст поста</b></td>
-               <td><b>Рейтинг поста</b></td>
-               {% if perms.NewsApp.change_post %}
-               <td><b>Действия</b></td>
-               {% endif %}
-           </tr>
-           {% for post in search_list %}
-           <tr>
-               <td> <a href="{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a></td>
-               <td> {{ post.dateCreation|date:'d.M.Y' }} </td>
-               <td> {{ post.author }} </td>
-               <td> {{ post.text|truncatewords:20|censor }} </td>
-               <td> {{ post.rating }} </td>
-               <td>
-                   {% if perms.NewsApp.change_post %}
-                   <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
-                   {% endif %}
-                   {% if perms.NewsApp.delete_post %}
-                   <a href="{% url 'post_delete' post.id %}">Удалить</a>
-                   {% endif %}
+    {% if search_list %}
+    {% for post in search_list %}
+        <p style="text-align: left;"> <a href = "{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a> </p>
+        <p style="text-align: left;"> Категория: {{ post.postCategory }} </p>
+        <p style="text-align: justify;"> {{ post.dateCreation|date:'d.M.Y' }} </p>
+        <p style="text-align: justify;"> Автор: {{ post.author }} </p>
+        <p style="text-align: justify;"> {{ post.text|truncatewords:20|censor }} </p>
+        <p style="text-align: justify; font-size: 15px"> Рейтинг поста: {{ post.rating }} </p>
 
-               </td>
-           </tr>
+       {% if perms.NewsApp.change_post %}
+       <p style="text-align: left; font-size: 12px; line-height: 50%"> <a href="{% url 'post_update' pk=post.id %}">Изменить пост</a> </p>
+       {% endif %}
+       {% if perms.NewsApp.delete_post %}
+       <p style="text-align: left; font-size: 12px; line-height: 50%"> <a href="{% url 'post_delete' pk=post.id %}">Удалить пост</a> </p>
+       {% endif %}
+        <hr>
            {% endfor %}
        </table>
    {% else %}

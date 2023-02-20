@@ -1,65 +1,47 @@
 {% extends 'flatpages/default.html' %}
 
 {% load custom_filters %}
+{% load static %}
 
 {% block title %}
 Posts
 {% endblock title %}
 
 {% block content %}
-   <h3>Новости и статьи</h3>
+   <h2>Новости и статьи</h2>
    <h3>{{ time_now|date:'M d Y' }}</h3>
    <h5>Всего постов: {{ posts|length }}</h5>
-
-<!-- {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
-    <form action="" method="get">
-       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
-       {{ filterset.form.as_p }}
-       {# Добавим кнопку отправки данных формы #}
-       <input type="submit" value="Найти" />
-   </form> -->
-
-   <!-- Если в переменной open_vacancies будет None,
-   то выведется указанный в фильтре текст -->
-   <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4>
+   <!-- <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4> -->
    <hr>
+
+   {% for post in posts %}
    {% if posts %}
-       <table>
-           <tr>
-               <td><b>Заголовок</b></td>
-               <td><b>Дата публикации</b></td>
-               <td><b>Автор поста</b></td>
-               <td><b>Текст поста</b></td>
-               <td><b>Рейтинг поста</b></td>
-               {% if perms.NewsApp.change_post %}
-               <td><b>Действия</b></td>
-               {% endif %}
-           </tr>
-           {% for post in posts %}
-           <tr>
-               <td> <a href="{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a></td>
-               <td> {{ post.dateCreation|date:'d.M.Y' }} </td>
-               <td> {{ post.author }} </td>
-               <td> {{ post.text|truncatewords:20|censor }} </td>
-               <td> {{ post.rating }} </td>
-               <td>
-                   {% if perms.NewsApp.change_post %}
-                   <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
-                   {% endif %}
-                   {% if perms.NewsApp.delete_post %}
-                   <a href="{% url 'post_delete' post.id %}">Удалить</a>
-                   {% endif %}
 
-               </td>
-           </tr>
-           {% endfor %}
-       </table>
+        <p style="text-align: left;"> <a href = "{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a> </p>
+        <p style="text-align: left;"> Категория: {{ post.postCategory }} </p>
+        <p style="text-align: justify;"> {{ post.dateCreation|date:'d.M.Y' }} </p>
+        <p style="text-align: justify;"> Автор: {{ post.author }} </p>
+        <p style="text-align: justify;"> {{ post.text|truncatewords:20|censor }} </p>
+        <p style="text-align: justify; font-size: 15px"> Рейтинг поста: {{ post.rating }} </p>
+
+       {% if perms.NewsApp.change_post %}
+       <p style="text-align: left; font-size: 12px; line-height: 50%"> <a href="{% url 'post_update' pk=post.id %}">Изменить пост</a> </p>
+       {% endif %}
+       {% if perms.NewsApp.delete_post %}
+       <p style="text-align: left; font-size: 12px; line-height: 50%"> <a href="{% url 'post_delete' pk=post.id %}">Удалить пост</a> </p>
+       {% endif %}
+        <hr>
+
    {% else %}
-       <h2>Будьте первым, кто опубликует пост :)</h2>
-   {% endif %}
+   <h2> Будьте первым, кто опубликует пост! </h2>
 
-    {# Добавляем пагинацию на страницу #}
-   {# Информация о предыдущих страницах #}
+   {% endif %}
+   {% endfor %}
+
+
+
+   <!-- Пагинация -->
+
    {% if page_obj.has_previous %}
        <a href="?page=1">1</a>
        {% if page_obj.previous_page_number != 1 %}
@@ -67,11 +49,7 @@ Posts
            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
        {% endif %}
    {% endif %}
-
-   {# Информация о текущей странице #}
    {{ page_obj.number }}
-
-   {# Информация о следующих страницах #}
    {% if page_obj.has_next %}
        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
