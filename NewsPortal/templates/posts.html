@@ -10,7 +10,7 @@ Posts
 {% block content %}
    <h2>Новости и статьи</h2>
    <h3>{{ time_now|date:'M d Y' }}</h3>
-   <h5>Всего постов: {{ posts|length }}</h5>
+   <h5>Всего постов: {{ paginator.count }} </h5>
    <!-- <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4> -->
    <hr>
 
@@ -18,7 +18,12 @@ Posts
    {% if posts %}
 
         <p style="text-align: left;"> <a href = "{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a> </p>
-        <p style="text-align: left;"> Категория: {{ post.postCategory }} </p>
+        <p style="text-align: justify;">
+        {% for cat in post.postCategory.all %}
+        {{ cat.name }}
+        {% endfor %}
+        </p>
+
         <p style="text-align: justify;"> {{ post.dateCreation|date:'d.M.Y' }} </p>
         <p style="text-align: justify;"> Автор: {{ post.author }} </p>
         <p style="text-align: justify;"> {{ post.text|truncatewords:20|censor }} </p>

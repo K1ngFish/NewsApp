@@ -19,7 +19,13 @@ Posts
     {% if search_list %}
     {% for post in search_list %}
         <p style="text-align: left;"> <a href = "{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a> </p>
-        <p style="text-align: left;"> Категория: {{ post.postCategory }} </p>
+
+        <p style="text-align: justify;">
+        {% for cat in post.postCategory.all %}
+        {{ cat.name }}
+        {% endfor %}
+        </p>
+
         <p style="text-align: justify;"> {{ post.dateCreation|date:'d.M.Y' }} </p>
         <p style="text-align: justify;"> Автор: {{ post.author }} </p>
         <p style="text-align: justify;"> {{ post.text|truncatewords:20|censor }} </p>
