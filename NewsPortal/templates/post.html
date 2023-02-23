@@ -10,7 +10,18 @@ Product
 
 <!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
 {% block content %}
-<h1>{{ post.title }}</h1>
+<h2>{{ post.title }}</h2>
 <h4>{{ post.dateCreation|date:'d.M.Y' }}</h4>
-<p> {{ post.text|censor }}</p>
+<p style="text-align: justify;"> {{ post.text|censor }} </p>
+
+{% if perms.NewsApp.change_post %}
+    <a href ="{% url 'post_update' pk=post.id %}" class ="btn btn-outline-primary btn-sm">Изменить пост</a>
+{% endif %}
+{% if perms.NewsApp.delete_post %}
+    <a href="{% url 'post_delete' pk=post.id %}" class = "btn btn-outline-danger btn-sm">Удалить пост</a>
+{% endif %}
+
+
 {% endblock content %}
+
+

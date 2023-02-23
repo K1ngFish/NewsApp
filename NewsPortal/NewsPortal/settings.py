@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
 
-    'NewsApp',
+    'NewsApp.apps.NewsAppConfig',
     'django_filters',
     'allauth',
     'allauth.account',
@@ -163,3 +163,8 @@ EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = "dev3np0rt@yandex.ru"
 
+SITE_URL = 'http://127.0.0.1:8000'
+
+
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

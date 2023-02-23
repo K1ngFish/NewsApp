@@ -14,27 +14,44 @@ Posts
    <!-- <h4> {{ open_vacancies|default_if_none:"Новые вакансии пока не появились!" }} </h4> -->
    <hr>
 
+<style>
+    table.text  {
+    width:  100%; /* Ширина таблицы */
+    border-spacing: 0; /* Расстояние между ячейками */
+    }
+    table.text td {
+    width: 90%; /* Ширина ячеек */
+    vertical-align: top; /* Выравнивание по верхнему краю */
+    }
+    td.rightcol { /* Правая ячейка */
+    text-align: right; /* Выравнивание по правому краю */
+    }
+ </style>
+
    {% for post in posts %}
    {% if posts %}
-
-        <p style="text-align: left;"> <a href = "{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a> </p>
-        <p style="text-align: justify;">
-        {% for cat in post.postCategory.all %}
-        {{ cat.name }}
-        {% endfor %}
-        </p>
+    <table class = "text">
+        <tr>
+        <td> <p style="text-align: left;"> <a href = "{% url 'post_detail' pk=post.id %}"> {{ post.title|censor }} </a> ({{ post.author }}) </p> </td>
+        <td class="rightcol"><p style="text-align: justify; font-size: 12px"> Рейтинг: {{ post.rating }} </p> </td>
+        </tr>
+    </table>
 
         <p style="text-align: justify;"> {{ post.dateCreation|date:'d.M.Y' }} </p>
-        <p style="text-align: justify;"> Автор: {{ post.author }} </p>
         <p style="text-align: justify;"> {{ post.text|truncatewords:20|censor }} </p>
-        <p style="text-align: justify; font-size: 15px"> Рейтинг поста: {{ post.rating }} </p>
+        <p style="text-align: justify; font-size: 12px">
+        {% for cat in post.postCategory.all %}
+            <a href="{% url 'category_list' cat.id %}"> {{ cat.name }} </a>
+        {% endfor %}
 
-       {% if perms.NewsApp.change_post %}
+
+
+       <!-- {% if perms.NewsApp.change_post %}
        <p style="text-align: left; font-size: 12px; line-height: 50%"> <a href="{% url 'post_update' pk=post.id %}">Изменить пост</a> </p>
        {% endif %}
        {% if perms.NewsApp.delete_post %}
        <p style="text-align: left; font-size: 12px; line-height: 50%"> <a href="{% url 'post_delete' pk=post.id %}">Удалить пост</a> </p>
-       {% endif %}
+       {% endif %} -->
         <hr>
 
    {% else %}
